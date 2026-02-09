@@ -1,20 +1,40 @@
-import { db, auth } from './firebase-config.js';
-import { collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+import { db } from './firebase-config.js'; 
+import { collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 const container = document.getElementById('products-container');
 
 async function loadProducts() {
     try {
-        // Busca produtos ordenados pela data de criação (mais novos primeiro)
+        console.log("Status do Banco de dados:", db); 
+
+        // Se o db for undefined, o erro acontece na linha abaixo
         const q = query(collection(db, "products"), orderBy("createdAt", "desc"));
         const querySnapshot = await getDocs(q);
         
-        container.innerHTML = ""; // Limpa o loading
+        container.innerHTML = ""; 
 
         if(querySnapshot.empty) {
             container.innerHTML = '<p class="col-span-full text-center text-gray-500">Nenhum produto cadastrado no momento.</p>';
             return;
         }
+
+        querySnapshot.forEach((doc) => {
+            const product = doc.data();
+            // ... (resto do seu código de exibir o produto)
+            // Vou resumir para caber na resposta, mantenha o seu HTML aqui
+            const html = `<div class="bg-white p-4 rounded shadow"><h3>${product.title}</h3></div>`;
+            container.innerHTML += html;
+        });
+
+    } catch (error) {
+        console.error("Erro ao buscar produtos:", error);
+        // Mostra o erro na tela para facilitar
+        container.innerHTML = `<p class="col-span-full text-center text-red-500">Erro técnico: ${error.message}</p>`;
+    }
+}
+
+loadProducts();
 
         querySnapshot.forEach((doc) => {
             const product = doc.data();
