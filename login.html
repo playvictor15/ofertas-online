@@ -1,50 +1,168 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Administrativo</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-200 h-screen flex items-center justify-center">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acesso Admin | OfertasVIP</title>
 
-    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm">
-        <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Acesso Restrito</h2>
-        
-        <form id="login-form" class="space-y-4">
-            <div>
-                <label class="block text-gray-700">Email</label>
-                <input type="email" id="email" class="w-full border p-2 rounded focus:outline-none focus:border-blue-500" required>
-            </div>
-            <div>
-                <label class="block text-gray-700">Senha</label>
-                <input type="password" id="password" class="w-full border p-2 rounded focus:outline-none focus:border-blue-500" required>
-            </div>
-            <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">Entrar</button>
-        </form>
-        <p id="error-msg" class="text-red-500 text-sm mt-4 text-center hidden"></p>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { fontFamily: { sans: ['Poppins', 'sans-serif'] } } }
+    };
+  </script>
+</head>
+
+<body class="bg-[#0F1729] font-sans min-h-screen flex flex-col items-center justify-center p-4">
+
+  <!-- Logo -->
+  <a href="index.html" class="text-3xl font-black text-white mb-8 flex items-center tracking-tight">
+    <i class="fas fa-bolt text-orange-500 mr-2"></i>
+    Ofertas<span class="text-orange-500">VIP</span>
+  </a>
+
+  <!-- Card -->
+  <div class="bg-white w-full max-w-sm rounded-2xl shadow-2xl p-8">
+    <h2 class="text-xl font-bold text-slate-800 mb-1">Acesso Restrito</h2>
+    <p class="text-slate-400 text-sm mb-7">Painel administrativo de ofertas.</p>
+
+    <!-- Error message -->
+    <div id="error-msg" class="hidden bg-red-50 border border-red-200 text-red-600 text-sm rounded-lg px-4 py-3 mb-5 flex items-center gap-2">
+      <i class="fas fa-circle-exclamation shrink-0"></i>
+      <span id="error-text">Email ou senha inválidos.</span>
     </div>
 
-    <script type="module">
-        import { auth } from './firebase-config.js';
-        import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+    <form id="login-form" class="space-y-5" novalidate>
 
-        const form = document.getElementById('login-form');
-        
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+      <!-- Email -->
+      <div>
+        <label for="email" class="block text-sm font-semibold text-slate-700 mb-1.5">Email</label>
+        <div class="relative">
+          <input
+            type="email"
+            id="email"
+            autocomplete="email"
+            required
+            placeholder="admin@email.com"
+            class="w-full border border-slate-300 rounded-lg py-2.5 px-4 pl-10 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
+          >
+          <i class="fas fa-envelope absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+        </div>
+      </div>
 
-            try {
-                await signInWithEmailAndPassword(auth, email, password);
-                window.location.href = "admin.html"; // Redireciona para o admin
-            } catch (error) {
-                const msg = document.getElementById('error-msg');
-                msg.textContent = "Email ou senha inválidos.";
-                msg.classList.remove('hidden');
-            }
-        });
-    </script>
+      <!-- Password -->
+      <div>
+        <label for="password" class="block text-sm font-semibold text-slate-700 mb-1.5">Senha</label>
+        <div class="relative">
+          <input
+            type="password"
+            id="password"
+            autocomplete="current-password"
+            required
+            placeholder="••••••••"
+            class="w-full border border-slate-300 rounded-lg py-2.5 px-4 pl-10 pr-11 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
+          >
+          <i class="fas fa-lock absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+          <button
+            type="button"
+            id="toggle-password"
+            class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition"
+            aria-label="Mostrar/ocultar senha"
+          >
+            <i class="fas fa-eye text-sm"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <button
+        type="submit"
+        id="submit-btn"
+        class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 mt-2 disabled:opacity-60 disabled:cursor-not-allowed"
+      >
+        <i class="fas fa-arrow-right-to-bracket"></i>
+        Entrar
+      </button>
+
+    </form>
+  </div>
+
+  <a href="index.html" class="mt-6 text-slate-500 hover:text-white text-xs transition flex items-center gap-1">
+    <i class="fas fa-arrow-left text-[10px]"></i> Voltar para as ofertas
+  </a>
+
+  <script type="module">
+    import { auth }                    from './firebase-config.js';
+    import { signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+    // Se já estiver logado, vai direto pro admin
+    onAuthStateChanged(auth, user => {
+      if (user) window.location.href = 'admin.html';
+    });
+
+    const form         = document.getElementById('login-form');
+    const submitBtn    = document.getElementById('submit-btn');
+    const errorBox     = document.getElementById('error-msg');
+    const errorText    = document.getElementById('error-text');
+    const togglePass   = document.getElementById('toggle-password');
+    const passwordField = document.getElementById('password');
+
+    // Toggle de senha
+    togglePass.addEventListener('click', () => {
+      const isPassword = passwordField.type === 'password';
+      passwordField.type = isPassword ? 'text' : 'password';
+      togglePass.querySelector('i').className = `fas fa-${isPassword ? 'eye-slash' : 'eye'} text-sm`;
+    });
+
+    function showError(msg) {
+      errorText.textContent = msg;
+      errorBox.classList.remove('hidden');
+    }
+
+    function hideError() {
+      errorBox.classList.add('hidden');
+    }
+
+    function setLoading(loading) {
+      submitBtn.disabled = loading;
+      submitBtn.innerHTML = loading
+        ? '<i class="fas fa-circle-notch fa-spin"></i> Entrando...'
+        : '<i class="fas fa-arrow-right-to-bracket"></i> Entrar';
+    }
+
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      hideError();
+
+      const email    = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      if (!email || !password) {
+        showError('Preencha email e senha.');
+        return;
+      }
+
+      setLoading(true);
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        window.location.href = 'admin.html';
+      } catch (err) {
+        const messages = {
+          'auth/user-not-found':   'Nenhuma conta encontrada com este email.',
+          'auth/wrong-password':   'Senha incorreta.',
+          'auth/invalid-email':    'Formato de email inválido.',
+          'auth/too-many-requests':'Muitas tentativas. Tente mais tarde.',
+        };
+        showError(messages[err.code] || 'Erro ao fazer login. Tente novamente.');
+        setLoading(false);
+      }
+    });
+  </script>
+
 </body>
 </html>
