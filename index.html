@@ -1,75 +1,176 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ofertas Premium | Melhores Achadinhos</title>
-    <link rel="icon" href="https://chatgpt.com/s/m_6990f1fe20248191944b13b1fbe3b7a7" type="image/x-icon">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        /* Efeito suave ao passar o mouse no card */
-        .product-card:hover { transform: translateY(-5px); }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="OfertasVIP – As melhores promoções do Shopee, Mercado Livre, Amazon e Magalu selecionadas para você economizar de verdade.">
+  <meta property="og:title"       content="OfertasVIP | Melhores Promoções">
+  <meta property="og:description" content="Economize com ofertas selecionadas a dedo. Shopee, ML, Amazon e Magalu.">
+  <meta property="og:type"        content="website">
+  <title>OfertasVIP | Melhores Promoções</title>
+
+  <!-- Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <!-- Tailwind (CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Poppins', 'sans-serif'] },
+        }
+      }
+    };
+  </script>
+
+  <style>
+    /* Shimmer skeleton */
+    .skeleton {
+      background: linear-gradient(90deg, #e2e8f0 25%, #cbd5e1 50%, #e2e8f0 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+    }
+    @keyframes shimmer {
+      0%   { background-position:  200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* Card image zoom */
+    .product-card .card-img { transition: transform 0.4s ease; }
+    .product-card:hover .card-img { transform: scale(1.06); }
+
+    /* Hide horizontal scrollbar on filter bar */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* Discount badge tilt */
+    .badge-discount { transform: rotate(-4deg); }
+
+    /* Toast transitions */
+    .toast { transition: all 0.3s cubic-bezier(0.4,0,0.2,1); }
+  </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans">
 
-    <header class="bg-indigo-900 text-white shadow-xl sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-3">
-            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-                <div class="text-2xl font-bold tracking-tight flex items-center">
-                    <i class="fas fa-bolt text-yellow-400 mr-2"></i>
-                    <span>Ofertas<span class="text-yellow-400">VIP</span></span>
-                </div>
-                
-                <div class="w-full md:w-1/2 relative">
-                    <input type="text" id="search-input" placeholder="O que você procura hoje?" 
-                        class="w-full py-2 px-4 pr-10 rounded-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-yellow-400">
-                    <i class="fas fa-search absolute right-3 top-3 text-gray-400"></i>
-                </div>
+<body class="bg-slate-100 font-sans text-slate-800">
 
-                <a href="login.html" class="text-xs text-indigo-300 hover:text-white transition">Área Restrita</a>
-            </div>
+  <!-- ===================== HEADER ===================== -->
+  <header class="bg-[#0F1729] text-white shadow-2xl sticky top-0 z-50">
+    <div class="container mx-auto px-4 py-4">
+      <div class="flex flex-col sm:flex-row items-center gap-3">
+
+        <!-- Logo -->
+        <a href="index.html" class="text-2xl font-black tracking-tight flex items-center shrink-0">
+          <i class="fas fa-bolt text-orange-500 mr-2"></i>
+          Ofertas<span class="text-orange-500">VIP</span>
+        </a>
+
+        <!-- Search bar -->
+        <div class="w-full sm:flex-1 relative">
+          <input
+            type="search"
+            id="search-input"
+            placeholder="Buscar produto..."
+            autocomplete="off"
+            class="w-full py-2.5 px-5 pr-12 rounded-full bg-white/10 border border-white/15 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white/20 transition text-sm"
+          >
+          <i class="fas fa-search absolute right-4 top-1/2 -translate-y-1/2 text-white/30 text-sm"></i>
         </div>
-    </header>
 
-    <div class="bg-white shadow-sm border-b">
-        <div class="container mx-auto px-4 py-3 flex overflow-x-auto gap-4 no-scrollbar">
-            <button class="filter-btn active bg-indigo-100 text-indigo-800 px-4 py-1 rounded-full text-sm font-bold whitespace-nowrap border border-indigo-200" data-cat="all">Todos</button>
-            <button class="filter-btn text-gray-600 hover:text-indigo-600 px-4 py-1 rounded-full text-sm font-medium whitespace-nowrap" data-cat="Tecnologia">Tecnologia</button>
-            <button class="filter-btn text-gray-600 hover:text-indigo-600 px-4 py-1 rounded-full text-sm font-medium whitespace-nowrap" data-cat="Casa">Casa</button>
-            <button class="filter-btn text-gray-600 hover:text-indigo-600 px-4 py-1 rounded-full text-sm font-medium whitespace-nowrap" data-cat="Moda">Moda</button>
-            <button class="filter-btn text-gray-600 hover:text-indigo-600 px-4 py-1 rounded-full text-sm font-medium whitespace-nowrap" data-cat="Ferramentas">Ferramentas</button>
-        </div>
+        <!-- Admin link (subtle) -->
+        <a href="login.html" class="hidden sm:flex items-center gap-1 text-xs text-white/30 hover:text-white/70 transition shrink-0">
+          <i class="fas fa-lock text-[10px]"></i> Área Restrita
+        </a>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================== CATEGORY FILTERS ===================== -->
+  <div class="bg-white border-b border-slate-200 shadow-sm sticky top-[77px] z-40">
+    <div class="container mx-auto px-4">
+      <div class="flex gap-2 overflow-x-auto py-3 no-scrollbar" id="filter-bar">
+        <button class="filter-btn active shrink-0 px-4 py-1.5 rounded-full text-sm font-semibold bg-orange-500 text-white" data-cat="all">🏷️ Todos</button>
+        <button class="filter-btn shrink-0 px-4 py-1.5 rounded-full text-sm font-semibold text-slate-500 hover:bg-orange-50 hover:text-orange-600 transition-all" data-cat="Tecnologia">💻 Tecnologia</button>
+        <button class="filter-btn shrink-0 px-4 py-1.5 rounded-full text-sm font-semibold text-slate-500 hover:bg-orange-50 hover:text-orange-600 transition-all" data-cat="Casa">🏠 Casa</button>
+        <button class="filter-btn shrink-0 px-4 py-1.5 rounded-full text-sm font-semibold text-slate-500 hover:bg-orange-50 hover:text-orange-600 transition-all" data-cat="Moda">👗 Moda</button>
+        <button class="filter-btn shrink-0 px-4 py-1.5 rounded-full text-sm font-semibold text-slate-500 hover:bg-orange-50 hover:text-orange-600 transition-all" data-cat="Ferramentas">🔧 Ferramentas</button>
+        <button class="filter-btn shrink-0 px-4 py-1.5 rounded-full text-sm font-semibold text-slate-500 hover:bg-orange-50 hover:text-orange-600 transition-all" data-cat="Outros">✨ Outros</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== MAIN ===================== -->
+  <main class="container mx-auto px-4 py-8 min-h-screen">
+
+    <!-- Skeleton loader (shown while fetching) -->
+    <div id="skeleton-loader" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
+
+    <!-- Products grid (hidden until data loads) -->
+    <div id="products-container" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 hidden"></div>
+
+    <!-- No results state -->
+    <div id="no-results" class="hidden text-center py-24">
+      <div class="text-6xl mb-4">🔍</div>
+      <h2 class="text-lg font-bold text-slate-600 mb-1">Nenhum produto encontrado</h2>
+      <p class="text-slate-400 text-sm">Tente outra busca ou explore outra categoria.</p>
     </div>
 
-    <main class="container mx-auto px-4 py-8 min-h-screen">
-        <div id="loading" class="text-center py-20">
-            <i class="fas fa-circle-notch fa-spin text-4xl text-indigo-600"></i>
-            <p class="mt-4 text-gray-500">Buscando as melhores ofertas...</p>
-        </div>
+    <!-- Error state -->
+    <div id="error-state" class="hidden text-center py-24">
+      <div class="text-6xl mb-4">😕</div>
+      <h2 class="text-lg font-bold text-slate-600 mb-1">Erro ao carregar ofertas</h2>
+      <p class="text-slate-400 text-sm">Verifique sua conexão e tente novamente.</p>
+      <button onclick="location.reload()" class="mt-4 px-6 py-2 bg-orange-500 text-white rounded-full text-sm font-semibold hover:bg-orange-600 transition">
+        Tentar novamente
+      </button>
+    </div>
 
-        <div id="products-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 hidden">
-            </div>
-        
-        <div id="no-results" class="hidden text-center py-20">
-            <i class="fas fa-search text-4xl text-gray-300 mb-4"></i>
-            <p class="text-gray-500">Nenhum produto encontrado.</p>
-        </div>
-    </main>
+    <!-- Load More -->
+    <div id="load-more-wrapper" class="hidden text-center mt-10">
+      <button id="load-more-btn" class="border-2 border-orange-500 text-orange-500 font-bold px-8 py-3 rounded-full hover:bg-orange-500 hover:text-white transition-all duration-300">
+        Ver mais ofertas <i class="fas fa-chevron-down ml-1"></i>
+      </button>
+    </div>
 
-    <a href="https://wa.me/SEU_NUMERO" target="_blank" class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 transition hover:scale-110 z-50 flex items-center justify-center">
-        <i class="fab fa-whatsapp text-3xl"></i>
-    </a>
+  </main>
 
-    <footer class="bg-slate-900 text-slate-400 py-8 text-center mt-12">
-        <div class="container mx-auto">
-            <p class="font-bold text-white mb-2">OfertasVIP</p>
-            <p class="text-sm">Selecionamos as melhores promoções para você economizar.</p>
-            <p class="text-xs mt-4 opacity-50">&copy; 2024 Todos os direitos reservados.</p>
-        </div>
-    </footer>
+  <!-- ===================== WHATSAPP BUTTON ===================== -->
+  <!--
+    ⚠️  Substitua SEU_NUMERO pelo número com DDI+DDD, sem espaços.
+        Exemplo: 5581912345678 (Brasil, Recife)
+  -->
+  <a
+    href="https://wa.me/SEU_NUMERO"
+    target="_blank"
+    rel="noopener noreferrer"
+    title="Receber ofertas no WhatsApp"
+    class="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-2xl transition-all duration-300 hover:scale-110 z-50 group flex items-center justify-center"
+  >
+    <i class="fab fa-whatsapp text-3xl"></i>
+    <span class="absolute right-[64px] bg-white text-slate-800 text-xs font-semibold px-3 py-1.5 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+      Receber ofertas!
+    </span>
+  </a>
 
-    <script type="module" src="app.js"></script>
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="bg-[#0F1729] text-slate-400 py-10 text-center mt-12">
+    <div class="container mx-auto px-4">
+      <p class="text-2xl font-black text-white mb-2">
+        <i class="fas fa-bolt text-orange-500 mr-1"></i>OfertasVIP
+      </p>
+      <p class="text-sm">Selecionamos as melhores promoções para você economizar.</p>
+      <p class="text-xs mt-4 opacity-30">&copy; <span id="footer-year"></span> OfertasVIP · Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <script>document.getElementById('footer-year').textContent = new Date().getFullYear();</script>
+  <script type="module" src="app.js"></script>
+
 </body>
 </html>
